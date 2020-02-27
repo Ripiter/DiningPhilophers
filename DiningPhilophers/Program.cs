@@ -5,7 +5,8 @@ namespace DiningPhilophers
 {
     class Program
     {
-        
+        static readonly object _lock = new object();
+
         static void Main(string[] args)
         {
             Fork[] forks = new Fork[5];
@@ -34,8 +35,10 @@ namespace DiningPhilophers
                 for (int i = 0; i < philosophers.Length; i++)
                 {
                     //philosophers[i].CheckIfCanEat(spots[i]);
-                    Thread.Sleep(100);
-                    ThreadPool.QueueUserWorkItem(philosophers[i].CheckIfCanEat, spots[i]);
+                    //Thread.Sleep(100);
+                    if(philosophers[i].IsAlive)
+                        philosophers[i].CheckIfCanEat(spots[i]);
+                    //t1.Join();
                 }
             }
 
