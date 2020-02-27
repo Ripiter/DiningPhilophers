@@ -1,21 +1,47 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace DiningPhilophers
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            Fork[] forks = new Fork[5];
+            Spot[] spots = new Spot[5];
+            Philosopher[] philosophers = new Philosopher[5];
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+            for (int i = 0; i < philosophers.Length; i++)
+            {
+                philosophers[i] = new Philosopher("Philosopher " + i);
+            }
+
+            for (int i = 0; i < forks.Length; i++)
+            {
+                forks[i] = new Fork(i);
+            }
+
+            for (int i = 0; i < spots.Length; i++)
+            {
+                // Check if the next spot is our of bouts
+                // and if it is make it it to the first fork
+                spots[i] = new Spot(forks[i], i + 1 == forks.Length ? forks[0] : forks[i + 1], i);
+            }
+
+            while (true)
+            {
+                for (int i = 0; i < philosophers.Length; i++)
+                {
+                    //philosophers[i].CheckIfCanEat(spots[i]);
+                    Thread.Sleep(100);
+                    ThreadPool.QueueUserWorkItem(philosophers[i].CheckIfCanEat, spots[i]);
+                }
+            }
+
+
+
+            Console.ReadLine();
         }
     }
 }
