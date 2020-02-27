@@ -23,7 +23,8 @@ namespace DiningPhilophers
         {
             get
             {
-                CheckIfItsAlive();
+                if (isAlive == true)
+                    CheckIfItsAlive();
                 return isAlive;
             }
             private set { isAlive = value; }
@@ -34,15 +35,14 @@ namespace DiningPhilophers
         {
             if (stopwatch.Elapsed.TotalSeconds > 15)
             {
-                if (isAlive == true)
-                    lock (_lock)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine(Name + " i dieded");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        IsAlive = false;
-                        stopwatch.Stop();
-                    }
+                lock (_lock)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(Name + " i dieded");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    IsAlive = false;
+                    stopwatch.Stop();
+                }
             }
         }
 
