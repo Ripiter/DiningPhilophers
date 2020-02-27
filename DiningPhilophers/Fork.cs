@@ -16,7 +16,7 @@ namespace DiningPhilophers
             set { id = value; }
         }
 
-        private bool isTaken;
+        private bool isTaken = false;
 
         public bool IsTaken
         {

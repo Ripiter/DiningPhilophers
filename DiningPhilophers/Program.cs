@@ -36,15 +36,22 @@ namespace DiningPhilophers
                 {
                     //philosophers[i].CheckIfCanEat(spots[i]);
                     //Thread.Sleep(100);
-                    if(philosophers[i].IsAlive)
-                        philosophers[i].CheckIfCanEat(spots[i]);
-                    //t1.Join();
+
+                    if (philosophers[i].IsAlive)
+                    {
+                        Monitor.TryEnter(_lock);
+                        Thread thread = new Thread(philosophers[i].CheckIfCanEat);
+                        thread.Start(spots[i]);
+
+                        //ThreadPool.QueueUserWorkItem(philosophers[i].CheckIfCanEat, spots[i]);
+                        Monitor.Exit(_lock);
+                    }
                 }
             }
 
-
-
             Console.ReadLine();
         }
+
+
     }
 }
